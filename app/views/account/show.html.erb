@@ -1,0 +1,6 @@
+<h1>My Account</h1>
+
+<p>Email: <%= @user.email %></p>
+<p>Address: <%= @user.address %></p>
+
+<%= link_to "My Orders", orders_path, class: "btn" %>

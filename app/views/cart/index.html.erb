@@ -1,0 +1,28 @@
+<h1>Your Cart</h1>
+
+<% if @products.empty? %>
+  <p>Cart is empty</p>
+<% else %>
+
+  <% total = 0 %>
+
+  <% @products.each do |p| %>
+    <% quantity = session[:cart][p.id.to_s] %>
+    <% total += p.price * quantity %>
+
+    <div class="card" style="margin-bottom:10px;">
+      <strong><%= p.name %></strong>
+      <p>Qty: <%= quantity %></p>
+      <p>$<%= p.price * quantity %></p>
+
+      <%= button_to "Remove",
+        cart_remove_path(p.id),
+        method: :delete %>
+    </div>
+  <% end %>
+
+  <h2>Total: $<%= total %></h2>
+
+  <%= link_to "Checkout", checkout_path, class: "btn" %>
+
+<% end %>

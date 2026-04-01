@@ -1,0 +1,11 @@
+<h1>Order #<%= @order.id %></h1>
+
+<% @items.each do |item| %>
+  <div class="card">
+    <p><%= item.product.name %></p>
+    <p>Qty: <%= item.quantity %></p>
+    <p>$<%= item.price %></p>
+  </div>
+<% end %>
+
+<h2>Total: $<%= @order.total %></h2>

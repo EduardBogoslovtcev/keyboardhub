@@ -1,0 +1,10 @@
+<h1>Your Orders</h1>
+
+<% @orders.each do |order| %>
+  <div class="card">
+    <p>Order #<%= order.id %></p>
+    <p>Total: $<%= order.total %></p>
+
+    <%= link_to "View", order_path(order) %>
+  </div>
+<% end %>

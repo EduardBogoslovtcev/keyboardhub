@@ -1,0 +1,19 @@
+<h1>Checkout</h1>
+
+<% total = 0 %>
+
+<% @products.each do |p| %>
+  <% quantity = session[:cart][p.id.to_s] %>
+  <% total += p.price * quantity %>
+
+  <div>
+    <p><%= p.name %> x <%= quantity %></p>
+  </div>
+<% end %>
+
+<p><strong>Subtotal: $<%= total %></strong></p>
+
+<%= button_to "Place Order",
+  checkout_create_path,
+  method: :post,
+  class: "btn" %>

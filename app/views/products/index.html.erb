@@ -1,0 +1,16 @@
+<h1>Keyboards</h1>
+
+<div style="display:grid; grid-template-columns:repeat(4,1fr); gap:20px;">
+  <% @products.each do |p| %>
+    <div class="card">
+      <img src="<%= p.image %>" width="100%">
+
+      <h3><%= p.name %></h3>
+      <p style="color:gray;"><%= p.brand.name %></p>
+
+      <p><strong>$<%= p.price %></strong></p>
+
+      <%= link_to "View", product_path(p), class: "btn" %>
+    </div>
+  <% end %>
+</div>

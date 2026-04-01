@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  price: 9.99
+  brand: one
+  layout: one
+  switch_type: one
+  image: MyString
+
+two:
+  name: MyString
+  description: MyText
+  price: 9.99
+  brand: two
+  layout: two
+  switch_type: two
+  image: MyString

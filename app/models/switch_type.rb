@@ -1,0 +1,2 @@
+class SwitchType < ApplicationRecord
+end

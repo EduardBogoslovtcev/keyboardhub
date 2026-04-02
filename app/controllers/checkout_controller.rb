@@ -1,5 +1,12 @@
 class CheckoutController < ApplicationController
   before_action :authenticate_user!
+  before_action :ensure_address_complete
+
+  def ensure_address_complete
+    unless current_user.address_complete?
+      redirect_to edit_account_path, alert: "Please complete your address before checkout"
+    end
+  end
 
   def index
     @cart = session[:cart] || {}

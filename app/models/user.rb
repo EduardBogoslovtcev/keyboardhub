@@ -9,4 +9,11 @@ class User < ApplicationRecord
   def admin?
     role == "admin"
   end
+
+  def address_complete?
+    address.present? &&
+    city.present? &&
+    postal_code.present? &&
+    province_id.present?
+  end
 end

@@ -1,0 +1,29 @@
+<h1>Edit Account</h1>
+
+<%= form_with model: @user, url: account_path, method: :patch do |f| %>
+
+  <div>
+    <p>Address</p>
+    <%= f.text_field :address %>
+  </div>
+
+  <div>
+    <p>City</p>
+    <%= f.text_field :city %>
+  </div>
+
+  <div>
+    <p>Postal Code</p>
+    <%= f.text_field :postal_code %>
+  </div>
+
+  <div>
+    <p>Province</p>
+    <%= f.collection_select :province_id, Province.all, :id, :name %>
+  </div>
+
+  <br>
+
+  <%= f.submit "Update", class: "btn" %>
+
+<% end %>

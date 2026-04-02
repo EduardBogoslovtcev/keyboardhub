@@ -22,6 +22,8 @@ Rails.application.routes.draw do
 
   # Account
   get "/account", to: "account#show"
+  get "/account/edit", to: "account#edit", as: :edit_account
+  patch "/account", to: "account#update"
 
   # Admin
   namespace :admin do

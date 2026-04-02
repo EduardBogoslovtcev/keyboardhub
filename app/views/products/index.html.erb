@@ -1,5 +1,30 @@
 <h1>Keyboards</h1>
 
+<%= form_with url: products_path, method: :get, local: true do %>
+
+  <!-- Search -->
+  <input type="text" name="search" placeholder="Search keyboards..."
+    value="<%= params[:search] %>">
+
+  <!-- Brand -->
+  <%= select_tag :brand_id,
+    options_from_collection_for_select(@brands, :id, :name, params[:brand_id]),
+    include_blank: "All Brands" %>
+
+  <!-- Layout -->
+  <%= select_tag :layout_id,
+    options_from_collection_for_select(@layouts, :id, :name, params[:layout_id]),
+    include_blank: "All Layouts" %>
+
+  <!-- Switch -->
+  <%= select_tag :switch_type_id,
+    options_from_collection_for_select(@switch_types, :id, :name, params[:switch_type_id]),
+    include_blank: "All Switches" %>
+
+  <%= submit_tag "Filter", class: "btn" %>
+
+<% end %>
+
 <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:20px; align-items:stretch;">
   <% @products.each do |p| %>
     <div class="card" >

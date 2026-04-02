@@ -1,7 +1,7 @@
 <h1>My Account</h1>
 
 <p>Email: <%= @user.email %></p>
-<p>Address: <%= @user.address %></p>
+<p>Address: <%= @user.address %>, <%= @user.city %>, <%= @user.postal_code %> </p>
 
 <%= link_to "My Orders", orders_path, class: "btn" %>
 

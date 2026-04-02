@@ -1,6 +1,7 @@
 module Admin
   class ProductsController < ApplicationController
     before_action :set_product, only: [:edit, :update, :destroy]
+    before_action :require_admin
 
     def index
       @products = Product.all
@@ -40,6 +41,12 @@ module Admin
 
     def set_product
       @product = Product.find(params[:id])
+    end
+
+    def require_admin
+      unless current_user&.admin?
+        redirect_to root_path, alert: "Not authorized"
+      end
     end
 
     def product_params

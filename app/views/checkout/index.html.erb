@@ -1,17 +1,22 @@
 <h1>Checkout</h1>
 
-<% total = 0 %>
+<% subtotal = 0 %>
 
 <% @products.each do |p| %>
   <% quantity = session[:cart][p.id.to_s] %>
-  <% total += p.price * quantity %>
-
-  <div>
-    <p><%= p.name %> x <%= quantity %></p>
-  </div>
+  <% subtotal += p.price * quantity %>
 <% end %>
 
-<p><strong>Subtotal: $<%= total %></strong></p>
+<% tax_rate = current_user&.province&.tax_rate || 0 %>
+<% tax = subtotal * tax_rate %>
+<% total = subtotal + tax %>
+
+<hr>
+
+<p>Subtotal: $<%= subtotal.round(2) %></p>
+<p>Tax (<%= (tax_rate * 100).round(2) %>%): $<%= tax.round(2) %></p>
+
+<h2>Total: $<%= total.round(2) %></h2>
 
 <%= button_to "Place Order",
   checkout_create_path,

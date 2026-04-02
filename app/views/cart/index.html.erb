@@ -35,7 +35,16 @@
     </div>
   <% end %>
 
-  <h2>Subtotal: $<%= total %></h2>
+  <% tax_rate = current_user&.province&.tax_rate || 0 %>
+  <% tax = total * tax_rate %>
+  <% final_total = total + tax %>
+
+  <hr>
+
+  <p>Subtotal: $<%= total.round(2) %></p>
+  <p>Tax (<%= (tax_rate * 100).round(2) %>%): $<%= tax.round(2) %></p>
+
+  <h2>Total: $<%= final_total.round(2) %></h2>
 
   <%= link_to "Checkout", checkout_path, class: "btn" %>
 

@@ -1,20 +1,31 @@
 <div style="display:flex; gap:40px;">
 
-  <img src="<%= @product.image %>" width="400">
+  <!-- IMAGE -->
+  <img src="<%= @product.image %>" style="width:400px; height:300px; object-fit:cover; border-radius:10px;">
 
+  <!-- INFO -->
   <div>
     <h1><%= @product.name %></h1>
 
     <p style="color:gray;"><%= @product.brand.name %></p>
 
-    <p><%= @product.description %></p>
+    <p style="margin-top:15px;"><%= @product.description %></p>
 
-    <h2>$<%= @product.price %></h2>
+    <h2 style="margin-top:20px;">$<%= @product.price %></h2>
 
+    <!-- SPECS -->
+    <div style="margin-top:20px; border-top:1px solid #e5e7eb; padding-top:15px;">
+      <p><strong>Brand:</strong> <%= @product.brand.name %></p>
+      <p><strong>Layout:</strong> <%= @product.layout.name %></p>
+      <p><strong>Switch Type:</strong> <%= @product.switch_type.name %></p>
+    </div>
+
+    <!-- ADD TO CART -->
     <%= button_to "Add to Cart",
       cart_add_path(product_id: @product.id),
       method: :post,
-      class: "btn" %>
+      class: "btn",
+      style: "margin-top:20px;" %>
   </div>
 
 </div>

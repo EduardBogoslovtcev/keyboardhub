@@ -12,7 +12,21 @@
 
     <div class="card" style="margin-bottom:10px;">
       <strong><%= p.name %></strong>
-      <p>Qty: <%= quantity %></p>
+      <div style="display:flex; align-items:center">
+        <p>
+          Qty: <%= quantity %>
+
+          <%= button_to "+",
+            cart_increase_path(p.id),
+            method: :post,
+            style: "margin-left:10px;" %>
+
+          <%= button_to "-",
+            cart_decrease_path(p.id),
+            method: :post,
+            style: "margin-left:5px;" %>
+        </p>  
+      </div>
       <p>$<%= p.price * quantity %></p>
 
       <%= button_to "Remove",
@@ -21,7 +35,7 @@
     </div>
   <% end %>
 
-  <h2>Total: $<%= total %></h2>
+  <h2>Subtotal: $<%= total %></h2>
 
   <%= link_to "Checkout", checkout_path, class: "btn" %>
 

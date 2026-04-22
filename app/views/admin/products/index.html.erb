@@ -1,12 +1,29 @@
-<h1>Admin Products</h1>
+<h1>Admin Dashboard</h1>
 
-<%= link_to "New Product", new_admin_product_path, class: "btn" %>
+<%= link_to "Add New Keyboard", new_admin_product_path, class: "btn" %>
 
-<% @products.each do |p| %>
-  <div class="card">
-    <p><%= p.name %></p>
-    <p>$<%= p.price %></p>
+<br><br>
 
-    <%= link_to "Edit", edit_admin_product_path(p) %>
-  </div>
-<% end %>
+<table style="width:100%; border-collapse:collapse;">
+  <tr style="border-bottom:1px solid #ccc;">
+    <th>Name</th>
+    <th>Brand</th>
+    <th>Price</th>
+    <th>Actions</th>
+  </tr>
+
+  <% @products.each do |p| %>
+    <tr style="border-bottom:1px solid #eee;">
+      <td><%= p.name %></td>
+      <td><%= p.brand&.name %></td>
+      <td>$<%= p.price %></td>
+      <td>
+        <%= link_to "Edit", edit_admin_product_path(p) %> |
+        <%= button_to "Delete",
+          admin_product_path(p),
+          method: :delete,
+          data: { confirm: "Are you sure?" } %>
+      </td>
+    </tr>
+  <% end %>
+</table>

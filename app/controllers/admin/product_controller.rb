@@ -1,9 +1,8 @@
-
 module Admin
   class ProductsController < ApplicationController
-    before_action :set_product, only: [:edit, :update, :destroy]
-    before_action :require_admin
     before_action :authenticate_user!
+    before_action :require_admin
+    before_action :set_product, only: [:edit, :update, :destroy]
 
     def index
       @products = Product.all
@@ -17,7 +16,7 @@ module Admin
       @product = Product.new(product_params)
 
       if @product.save
-        redirect_to admin_products_path
+        redirect_to admin_products_path, notice: "Product created"
       else
         render :new
       end
@@ -28,7 +27,7 @@ module Admin
 
     def update
       if @product.update(product_params)
-        redirect_to admin_products_path
+        redirect_to admin_products_path, notice: "Product updated"
       else
         render :edit
       end
@@ -36,7 +35,7 @@ module Admin
 
     def destroy
       @product.destroy
-      redirect_to admin_products_path
+      redirect_to admin_products_path, notice: "Product deleted"
     end
 
     private
@@ -45,17 +44,17 @@ module Admin
       @product = Product.find(params[:id])
     end
 
+    def product_params
+      params.require(:product).permit(
+        :name, :description, :price,
+        :brand_id, :layout_id, :switch_type_id
+      )
+    end
+
     def require_admin
       unless current_user&.admin?
         redirect_to root_path, alert: "Not authorized"
       end
-    end
-
-    def product_params
-      params.require(:product).permit(
-        :name, :description, :price, :image,
-        :brand_id, :layout_id, :switch_type_id
-      )
     end
   end
 end

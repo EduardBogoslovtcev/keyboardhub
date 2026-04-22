@@ -20,6 +20,9 @@
     <strong>KeyboardHub</strong>
 
     <div>
+      <% if user_signed_in? && current_user.admin? %>
+        <%= link_to "Admin", admin_products_path %>
+      <% end %>
       <%= link_to "Products", root_path %>
       <%= link_to "Cart", cart_path %>
 

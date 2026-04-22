@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   # Checkout
   get "/checkout", to: "checkout#index"
+  get "/checkout/success", to: "checkout#success"
   post "/checkout/create", to: "checkout#create"
 
   # Orders

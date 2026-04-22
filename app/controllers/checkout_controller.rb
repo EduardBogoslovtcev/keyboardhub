@@ -14,33 +14,51 @@ class CheckoutController < ApplicationController
   end
 
   def create
-    @cart = session[:cart] || {}
-    products = Product.find(@cart.keys)
+    cart = session[:cart] || {}
 
-    subtotal = products.sum do |p|
-      p.price * @cart[p.id.to_s]
+    products = Product.find(cart.keys)
+
+    line_items = products.map do |p|
+      quantity = cart[p.id.to_s]
+
+      {
+        price_data: {
+          currency: 'cad',
+          product_data: {
+            name: p.name
+          },
+          unit_amount: (p.price * 100).to_i # cents
+        },
+        quantity: quantity
+      }
     end
 
+    # TAX CALCULATION
+    subtotal = products.sum { |p| p.price * cart[p.id.to_s] }
     tax_rate = current_user.province&.tax_rate || 0
-    total = subtotal + (subtotal * tax_rate)
+    tax = (subtotal * tax_rate * 100).to_i
 
-    order = Order.create!(
-      user: current_user,
-      total: total,
-      status: "paid"
+    if tax > 0
+      line_items << {
+        price_data: {
+          currency: 'cad',
+          product_data: {
+            name: "Tax"
+          },
+          unit_amount: tax
+        },
+        quantity: 1
+      }
+    end
+
+    session = Stripe::Checkout::Session.create(
+      payment_method_types: ['card'],
+      line_items: line_items,
+      mode: 'payment',
+      success_url: "#{root_url}checkout/success",
+      cancel_url: "#{root_url}cart"
     )
 
-    products.each do |product|
-      OrderItem.create!(
-        order: order,
-        product: product,
-        quantity: @cart[product.id.to_s],
-        price: product.price
-      )
-    end
-
-    session[:cart] = {}
-
-    redirect_to order_path(order)
+    redirect_to session.url, allow_other_host: true
   end
 end

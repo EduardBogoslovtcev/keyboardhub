@@ -48,7 +48,7 @@ RUN bundle install && \
 # Copy application code
 COPY . .
 
-RUN chmod +x bin/rails
+RUN chmod +x bin/rails bin/docker-entrypoint
 
 # Precompile bootsnap code for faster boot times.
 # -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
@@ -77,4 +77,4 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start server via Thruster by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["./bin/thrust", "./bin/rails", "server"]
+CMD ["./bin/rails", "server", "-b", "0.0.0.0", "-p", "10000"]

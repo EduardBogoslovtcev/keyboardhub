@@ -51,18 +51,45 @@ class CheckoutController < ApplicationController
       }
     end
 
-    session = Stripe::Checkout::Session.create(
+    stripe_session = Stripe::Checkout::Session.create(
       payment_method_types: ['card'],
       line_items: line_items,
       mode: 'payment',
       success_url: "#{root_url}checkout/success",
-      cancel_url: "#{root_url}cart"
+      cancel_url: "#{root_url}cart",
+
+      metadata: {
+        user_id: current_user.id,
+        cart: (session[:cart] || {}).to_json
+      }
     )
 
-    redirect_to session.url, allow_other_host: true
+    redirect_to stripe_session.url, allow_other_host: true
   end
 
   def success
-    session[:cart] = {}
+    cart = session[:cart] || {}
+    products = Product.find(cart.keys)
+
+    subtotal = products.sum { |p| p.price * cart[p.id.to_s] }
+    tax_rate = current_user.province&.tax_rate || 0
+    total = subtotal + (subtotal * tax_rate)
+
+    order = Order.create!(
+      user: current_user,
+      total: total,
+      status: "paid"
+    )
+
+    products.each do |p|
+      OrderItem.create!(
+        order: order,
+        product: p,
+        quantity: cart[p.id.to_s],
+        price: p.price
+      )
+    end
+
+    session[:cart] = []
   end
 end

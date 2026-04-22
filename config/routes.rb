@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   get "/checkout", to: "checkout#index"
   get "/checkout/success", to: "checkout#success"
   post "/checkout/create", to: "checkout#create"
+  post "/webhooks/stripe", to: "webhooks#stripe"
 
   # Orders
   resources :orders, only: [:index, :show]

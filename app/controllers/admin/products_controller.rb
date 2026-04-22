@@ -33,8 +33,12 @@ module Admin
     end
 
     def destroy
-      @product.destroy
-      redirect_to admin_products_path, notice: "Product deleted"
+      if @product.order_items.exists?
+        redirect_to admin_products_path, alert: "Cannot delete product with existing orders"
+      else
+        @product.destroy
+        redirect_to admin_products_path, notice: "Product deleted"
+      end
     end
 
     private
